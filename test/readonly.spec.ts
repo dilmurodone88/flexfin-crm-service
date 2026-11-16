@@ -6,13 +6,13 @@ describe('faqat-o‘qish himoyasi (Prisma darajasi)', () => {
     new PrismaClient({ datasourceUrl: 'sqlserver://127.0.0.1:1;database=x;user=a;password=b;trustServerCertificate=true;connectTimeout=1' }),
   );
   const writes: Record<string, () => Promise<unknown>> = {
-    create: () => db.placeholder.create({ data: { id: 1 } }),
-    createMany: () => db.placeholder.createMany({ data: [] }),
-    update: () => db.placeholder.update({ where: { id: 1 }, data: {} }),
-    updateMany: () => db.placeholder.updateMany({ data: {} }),
-    upsert: () => db.placeholder.upsert({ where: { id: 1 }, create: { id: 1 }, update: {} }),
-    delete: () => db.placeholder.delete({ where: { id: 1 } }),
-    deleteMany: () => db.placeholder.deleteMany({}),
+    create: () => db.loan.create({ data: {} }),
+    createMany: () => db.loan.createMany({ data: [] }),
+    update: () => db.loan.update({ where: { OID: 1n }, data: {} }),
+    updateMany: () => db.loan.updateMany({ data: {} }),
+    upsert: () => db.loan.upsert({ where: { OID: 1n }, create: {}, update: {} }),
+    delete: () => db.loan.delete({ where: { OID: 1n } }),
+    deleteMany: () => db.loan.deleteMany({}),
     executeRaw: () => db.$executeRaw`DELETE FROM x`,
     executeRawUnsafe: () => db.$executeRawUnsafe('DELETE FROM x'),
     queryRaw: () => db.$queryRaw`SELECT 1`,
@@ -25,7 +25,7 @@ describe('faqat-o‘qish himoyasi (Prisma darajasi)', () => {
     });
   }
   it('findMany ruxsat (bu yerda faqat ulanish xatosi)', async () => {
-    const err = await db.placeholder.findMany({ take: 1 }).then(() => null, (e: Error) => e);
+    const err = await db.loan.findMany({ take: 1 }).then(() => null, (e: Error) => e);
     expect(String(err?.message ?? '')).not.toMatch(/faqat-o'qish/);
   }, 30000);
 });

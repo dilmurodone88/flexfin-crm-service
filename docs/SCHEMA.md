@@ -3,6 +3,11 @@
 Servis modellarni **ishga tushganda** Prisma DMMF'dan o'qiydi va bog'lanishlarni (FK) bazaning o'zidan oladi, shuning uchun schema'dagi
 `@relation`lar servis ishlashi uchun shart emas. Lekin aniq, hujjatlashtirilgan, bog'lanishli schema (IDE, tiplar, kelajakdagi kod uchun) quyidagicha hosil qilinadi.
 
+## Tayyor schema
+
+`prisma/schema.prisma`: **288 model, 472 `@relation`**, `prisma validate` dan o'tgan. Dump'dan yig'ilgan: `node scripts/build-schema-from-dump.cjs`.
+Decimal aniqligi dump'da yo'q (standart); aniq qiymatlar uchun quyidagi ikki bosqichli yo'l.
+
 ## Nima uchun ikki bosqich
 
 - `prisma db pull` **aniq turlarni** beradi (decimal(p,s), nvarchar(n), `@map`, `@@schema`), lekin SQL Server'da FK'lar sikli sababli

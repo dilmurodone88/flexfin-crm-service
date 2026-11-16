@@ -7,6 +7,7 @@ FlexFin (SQL Server) bazasi uchun **faqat-o'qiydigan REST API**: NestJS 11 + Fas
 - **Xavfsiz:** faqat GET; Prisma darajasida yozish/raw bloklangan; parol/hash doim `***`; shaxsiy ma'lumot yashirin; API kalit + IP; tezlik cheklovi.
 - **O'chmaydi:** Docker `restart` + Windows nazoratchi (`deploy/windows/`): yiqilsa, server qayta yonsa ham o'zi ko'tariladi; SSE `Last-Event-ID` bilan yo'qotishsiz davom etadi.
 - **Ishonchli:** timeout + bir marta qayta urinish, graceful shutdown, `/health` `/ready` `/metrics`, JSON log (qiymatsiz, `reqId` bilan).
+- **To'liq tushuntirish:** [docs/OVERVIEW.md](docs/OVERVIEW.md) (nechta API: **1116**, 259 model, 472 bog'lanish, Prisma schema).
 - **Hujjat:** `/docs` (Swagger, har model uchun) va `docs/`: [ARCHITECTURE](docs/ARCHITECTURE.md) · [API](docs/API.md) · [DATA-MODEL](docs/DATA-MODEL.md) (ER) · [RELATIONS](docs/RELATIONS.md) (har model bo'yicha bog'lanishlar) · [SCHEMA](docs/SCHEMA.md) · [DEPLOY](docs/DEPLOY.md) · [OPERATIONS](docs/OPERATIONS.md) (runbook) · [SECURITY](docs/SECURITY.md) · [CHANGELOG](docs/CHANGELOG.md).
 - **Docker + nginx:** HTTP/2, TLS, gzip, SSE, `docker compose up -d --build`.
 

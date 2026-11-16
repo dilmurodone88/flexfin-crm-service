@@ -3,6 +3,10 @@
 Interaktiv hujjat (har model uchun maydonlar, filtrlar, bog'lanishlar): **`/docs`** (Swagger UI), **`/docs-json`** (OpenAPI 3).
 Ma'lumotlar modeli: [DATA-MODEL.md](DATA-MODEL.md). Hammasi **faqat GET** (boshqa metodlar 405).
 
+## Nechta API bor
+
+**1116 ta GET yo'l** (259 ro'yxat, 241 bitta, 241 `/full`, 241 `/graph`, 124 bola shabloni = 472 ota-bola kombinatsiya, raw, feed, meta). To'liq jadval va tushuntirish: [OVERVIEW.md](OVERVIEW.md). Mashina o'qiydigan shakl: [openapi.json](openapi.json).
+
 ## Autentifikatsiya va xavfsizlik
 
 | Qoida | Tafsilot |
@@ -40,6 +44,7 @@ Hamma xato bir xil shaklda: `{ "statusCode": 404, "error": "Topilmadi", "reqId":
 | `GET /v1/{Model}` | ro'yxat |
 | `GET /v1/{Model}/{id}` | bitta yozuv |
 | `GET /v1/{Model}/{id}/full` | yozuv + hamma FK ota-yozuvlar (`_expand`) + bolalarga havolalar |
+| `GET /v1/{Model}/{id}/graph` | chuqur: ota zanjiri (`depth` ≤ 3, `_parents`) + `include=Bola1,Bola2` (`_children`, `childTake` ≤ 200) |
 | `GET /v1/{Model}/{id}/{Child}?by=Ustun` | bog'langan bolalar |
 | `GET /v1/raw`, `/v1/raw/{schema.jadval}` | primary key'siz jadvallar |
 | `GET /v1/feed/changes`, `/v1/feed/latest`, `/v1/feed/stream` | o'zgarishlar (real vaqt) |
