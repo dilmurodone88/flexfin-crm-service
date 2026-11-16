@@ -1,0 +1,18 @@
+{
+  "name": "flexfin-crm-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "FlexFin (SQL Server) uchun faqat-o'qiydigan GET servis. Modellar `prisma db pull` bilan bazadan olinadi.",
+  "engines": { "node": ">=18.18" },
+  "scripts": {
+    "pull": "prisma db pull",
+    "generate": "prisma generate",
+    "start": "node src/server.mjs",
+    "up": "prisma db pull && prisma generate && node src/server.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "prisma": "^6.19.3"
+  }
+}

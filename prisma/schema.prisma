@@ -1,0 +1,15 @@
+// VAQTINCHALIK andoza: haqiqiy schema `npm run schema:build` bilan hosil bo'ladi (docs/SCHEMA.md).
+// Servis modellarni Prisma DMMF'dan dinamik o'qiydi, shuning uchun kodni o'zgartirish shart emas.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "sqlserver"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Placeholder {
+  id Int @id
+}

@@ -1,0 +1,12 @@
+// Faqat generator va datasource shu yerda. Modellar `npm run up` (prisma db pull) bilan
+// FlexFin bazasidan avtomatik o'qiladi - qo'lda yozilmaydi. db pull bazaga HECH NARSA yozmaydi.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "sqlserver"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+  schemas  = ["dbo", "FlexFinApi", "PMT", "CBReport", "Grki", "CloseOperDay", "CdcCore"]
+}

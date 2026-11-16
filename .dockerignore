@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+logs
+certs
+test
+docs
+legacy-js
+schema-dump.txt
+*.md
