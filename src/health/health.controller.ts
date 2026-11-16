@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RegistryService } from '../registry/registry.service';
 
 export const SERVICE_NAME = 'flexfin-crm-service';
-export const SERVICE_VERSION = '2.1.0';
+export const SERVICE_VERSION = '2.1.1';
 
 @ApiTags('health')
 @Controller()

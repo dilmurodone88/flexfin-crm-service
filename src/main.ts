@@ -40,31 +40,44 @@ export async function createApp(env: Env = loadEnv()): Promise<NestFastifyApplic
 
   await app.init(); // registry modellarni yuklaydi
 
-  if (env.SWAGGER_ENABLED) {
-    const config = new DocumentBuilder()
-      .setTitle('flexfin-crm-service')
-      .setVersion(SERVICE_VERSION)
-      .setDescription(
-        [
-          'FlexFin (SQL Server) bazasi uchun **faqat-o‘qiydigan** REST API.',
-          '',
-          '- Autentifikatsiya: `x-api-key` sarlavhasi + IP ro‘yxati.',
-          '- Bog‘lanishlar: `?expand=Ustun`, `/{id}/full`, `/{id}/{Bola}`.',
-          '- Real vaqt: `/v1/feed/stream` (SSE), `/v1/feed/changes` (kursor).',
-          '- Maxfiy ustunlar (parol/hash) doim `***`; shaxsiy ma’lumot default yashirin.',
-        ].join('\n'),
-      )
-      .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'apiKey')
-      .build();
-    const doc = SwaggerModule.createDocument(app, config);
-    addModelDocs(doc, app.get(RegistryService));
-    // /docs faqat ruxsat etilgan IP'lardan
-    fastify.addHook('onRequest', async (req, reply) => {
-      if (/^\/docs/.test(req.url) && !env.ALLOWED_IPS.includes(normalizeIp(req.ip))) {
-        await reply.code(403).send({ statusCode: 403, error: 'IP ruxsat etilmagan' });
-      }
-    });
-    SwaggerModule.setup('docs', app, doc, { jsonDocumentUrl: 'docs-json', swaggerOptions: { persistAuthorization: true, docExpansion: 'none' } });
+  // Nest paket yuklanmasa jarayonni o'zi o'chiradi (process.exit): shuning uchun oldindan sinaymiz
+  let docsAvailable = true;
+  try {
+    require('@fastify/static');
+  } catch (e: any) {
+    docsAvailable = false;
+    app.get(Logger).error(`Swagger o'chirildi, API ishlayveradi (@fastify/static yuklanmadi: ${e.message})`);
+  }
+  if (env.SWAGGER_ENABLED && docsAvailable) {
+    // Hujjat (Swagger) xatosi API'ni hech qachon yiqitmasin
+    try {
+      const config = new DocumentBuilder()
+        .setTitle('flexfin-crm-service')
+        .setVersion(SERVICE_VERSION)
+        .setDescription(
+          [
+            'FlexFin (SQL Server) bazasi uchun **faqat-o‘qiydigan** REST API.',
+            '',
+            '- Autentifikatsiya: `x-api-key` sarlavhasi + IP ro‘yxati.',
+            '- Bog‘lanishlar: `?expand=Ustun`, `/{id}/full`, `/{id}/{Bola}`.',
+            '- Real vaqt: `/v1/feed/stream` (SSE), `/v1/feed/changes` (kursor).',
+            '- Maxfiy ustunlar (parol/hash) doim `***`; shaxsiy ma’lumot default yashirin.',
+          ].join('\n'),
+        )
+        .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'apiKey')
+        .build();
+      const doc = SwaggerModule.createDocument(app, config);
+      addModelDocs(doc, app.get(RegistryService));
+      // /docs faqat ruxsat etilgan IP'lardan
+      fastify.addHook('onRequest', async (req, reply) => {
+        if (/^\/docs/.test(req.url) && !env.ALLOWED_IPS.includes(normalizeIp(req.ip))) {
+          await reply.code(403).send({ statusCode: 403, error: 'IP ruxsat etilmagan' });
+        }
+      });
+      SwaggerModule.setup('docs', app, doc, { jsonDocumentUrl: 'docs-json', swaggerOptions: { persistAuthorization: true, docExpansion: 'none' } });
+    } catch (e: any) {
+      app.get(Logger).error(`Swagger o'chirildi (API ishlayveradi): ${e.message}`);
+    }
   }
   return app;
 }
